@@ -8,8 +8,6 @@ import (
 const numberGenes int = 100
 const numberGeneValues int = 8
 
-const mutationRate float32 = 0.25
-
 type Entity struct {
 	Genome [numberGenes]int
 }
@@ -58,8 +56,8 @@ func (e *Entity) Code() string {
 	return code.String()
 }
 
-// Mutate randomly mutates random genes according to the mutate rate constant
-func (e *Entity) Mutate() {
+// Mutate randomly mutates random genes according to the mutate rate
+func (e *Entity) Mutate(mutationRate float32) {
 	for i, _ := range e.Genome {
 		if rand.Float32() <= mutationRate {
 			e.Genome[i] = rand.Intn(numberGeneValues - 1)
