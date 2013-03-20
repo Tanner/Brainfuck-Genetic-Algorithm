@@ -8,7 +8,7 @@ const numberGenes int = 100
 const numberGeneValues int = 8
 
 type Entity struct {
-	genome [numberGenes]int
+	Genome [numberGenes]int
 }
 
 func NewEntity() *Entity {
