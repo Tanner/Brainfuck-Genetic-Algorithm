@@ -3,6 +3,7 @@ package genetic
 import (
 	"math/rand"
 	"bytes"
+	"fmt"
 )
 
 const numberGenes int = 100
@@ -57,10 +58,16 @@ func (e *Entity) Code() string {
 }
 
 // Mutate randomly mutates random genes according to the mutate rate
-func (e *Entity) Mutate(mutationRate float32) {
+func (e *Entity) Mutate(mutationRate float32) error {
+	if mutationRate < 0 || mutationRate > 1 {
+		return fmt.Errorf("genetic: mutate rate not between [0.0, 1.0] received %f", mutationRate)
+	}
+
 	for i, _ := range e.Genome {
 		if rand.Float32() <= mutationRate {
 			e.Genome[i] = rand.Intn(numberGeneValues - 1)
 		}
 	}
+
+	return nil
 }
