@@ -15,7 +15,7 @@ func NewEntity() *Entity {
 	var genome [numberGenes]int
 
 	for i, _ := range genome {
-		genome[i] = rand.Intn(numberGeneValues + 1)
+		genome[i] = rand.Intn(numberGeneValues - 1)
 	}
 
 	e := Entity{genome}
