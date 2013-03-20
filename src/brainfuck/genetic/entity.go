@@ -12,6 +12,7 @@ type Entity struct {
 	Genome [numberGenes]int
 }
 
+// NewEntity returns a new Entity with a random genome
 func NewEntity() *Entity {
 	var genome [numberGenes]int
 
@@ -24,6 +25,7 @@ func NewEntity() *Entity {
 	return &e
 }
 
+// Code returns the brainfuck code for the given Entity's genome
 func (e *Entity) Code() string {
 	var code bytes.Buffer
 	var instruction rune
