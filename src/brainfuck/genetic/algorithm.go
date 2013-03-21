@@ -1,9 +1,6 @@
 package genetic
 
-import (
-	"math"
-	"math/rand"
-)
+import "math/rand"
 
 type Member struct {
 	entity Entity
@@ -38,7 +35,6 @@ func NewAlgorithm(populationSize, numberGenes int, mutationRate float32, goalOut
 func (algorithm *Algorithm) Evolve() {
 	NextPopulation := make([]Member, len(algorithm.Population))
 
-
 	for i := 0; i < len(NextPopulation); i++ {
 		parentA := algorithm.Select()
 		parentB := algorithm.Select()
@@ -69,10 +65,10 @@ func (algorithm *Algorithm) Select() *Member {
 	}
 
 	for i, member := range algorithm.Population {
-		normalizedFitness[i] = member.fitness / fitnessSum
-
-		if normalizedFitness[i] == math.NaN() {
-			normalizedFitness[i] = 0.0
+		if member.fitness == 0 || fitnessSum == 0 {
+			normalizedFitness[i] = 0
+		} else {
+			normalizedFitness[i] = member.fitness / fitnessSum
 		}
 	}
 
