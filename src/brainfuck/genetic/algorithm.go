@@ -16,6 +16,7 @@ type Algorithm struct {
 	Input string
 	Generations int
 	MutationRate float32
+	BestMember *Member
 }
 
 func NewAlgorithm(populationSize, numberGenes int, mutationRate float32, goalOutput, input string) *Algorithm {
@@ -26,6 +27,7 @@ func NewAlgorithm(populationSize, numberGenes int, mutationRate float32, goalOut
 	algorithm.Population = make([]Member, populationSize, populationSize)
 	algorithm.Generations = 0
 	algorithm.MutationRate = mutationRate
+	algorithm.BestMember = nil
 
 	for i, _ := range algorithm.Population {
 		algorithm.Population[i].entity = *NewEntity(numberGenes)
@@ -97,5 +99,9 @@ func (algorithm *Algorithm) updateFitness() {
 		member := &algorithm.Population[i];
 
 		member.fitness = member.entity.Fitness(algorithm.Input, algorithm.GoalOutput)
+
+		if algorithm.BestMember == nil || member.fitness > algorithm.BestMember.fitness {
+			algorithm.BestMember = member
+		}
 	}
 }
