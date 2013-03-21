@@ -11,6 +11,7 @@ type Algorithm struct {
 	Population []Member
 	GoalOutput string
 	Input string
+	Generations int
 	MutationRate float32
 }
 
@@ -28,6 +29,29 @@ func NewAlgorithm(populationSize, numberGenes int, mutationRate float32, goalOut
 	}
 
 	return algorithm
+}
+
+// Evolve evolves the entire population (crossover and mutates)
+func (algorithm *Algorithm) Evolve() {
+	NextPopulation := make([]Member, len(algorithm.Population))
+
+
+	for i := 0; i < len(NextPopulation); i++ {
+		parentA := algorithm.Select()
+		parentB := algorithm.Select()
+
+		childA, _, _ := Crossover(&parentA.entity, &parentB.entity)
+
+		childA.Mutate(algorithm.MutationRate)
+
+		newMember := Member{*childA, 0.0}
+
+		NextPopulation = append(NextPopulation, newMember)
+	}
+
+	algorithm.Population = NextPopulation
+
+	algorithm.Generations++
 }
 
 // Select selects a member from the population using roulette wheel selection
