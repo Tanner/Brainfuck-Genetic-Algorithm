@@ -7,11 +7,15 @@ type Member struct {
 
 type Algorithm struct {
 	Population []Member
+	GoalOutput string
+	Input string
 }
 
-func NewAlgorithm(populationSize, numberGenes int) *Algorithm {
+func NewAlgorithm(populationSize, numberGenes int, goalOutput, input string) *Algorithm {
 	algorithm := new(Algorithm)
 
+	algorithm.GoalOutput = goalOutput
+	algorithm.Input = input
 	algorithm.Population = make([]Member, populationSize, populationSize)
 
 	for i, _ := range algorithm.Population {
