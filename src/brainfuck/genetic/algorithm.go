@@ -1,6 +1,9 @@
 package genetic
 
-import "math/rand"
+import (
+	"math/rand"
+	"time"
+)
 
 type Member struct {
 	entity Entity
@@ -27,6 +30,8 @@ func NewAlgorithm(populationSize, numberGenes int, mutationRate float32, goalOut
 	for i, _ := range algorithm.Population {
 		algorithm.Population[i].entity = *NewEntity(numberGenes)
 	}
+
+	rand.Seed(time.Now().UTC().UnixNano())
 
 	return algorithm
 }
