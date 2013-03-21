@@ -27,27 +27,37 @@ func TestMutation(t *testing.T) {
 }
 
 func TestCrossover(t *testing.T) {
-	e1 := NewEntity(10)
-	e2 := NewEntity(10)
+	helper := func(numberGenes int) {
+		e1 := NewEntity(10)
+		e2 := NewEntity(10)
 
-	e3, e4, err := Crossover(e1, e2)
+		e3, e4, err := Crossover(e1, e2)
 
-	if err != nil {
-		t.Error(err)
+		if err != nil {
+			t.Error(err)
+		}
+
+		e1Code := e1.Code()
+		e2Code := e2.Code()
+		e3Code := e3.Code()
+		e4Code := e4.Code()
+
+		halfwayIndex := (int)(len(e1.Code()) / 2)
+
+		if e1Code[:halfwayIndex] != e3Code[:halfwayIndex] || e2Code[halfwayIndex:] != e3Code[halfwayIndex:] {
+			t.Error("Child from crossover did not get half genes from both parents")
+		}
+
+		if e2Code[:halfwayIndex] != e4Code[:halfwayIndex] || e1Code[halfwayIndex:] != e4Code[halfwayIndex:] {
+			t.Error("Child from crossover did not get half genes from both parents")
+		}
 	}
 
-	e1Code := e1.Code()
-	e2Code := e2.Code()
-	e3Code := e3.Code()
-	e4Code := e4.Code()
+	// Test odd number of genes
+	helper(11)
+	helper(3)
 
-	halfwayIndex := (int)(len(e1.Code()) / 2)
-
-	if e1Code[:halfwayIndex] != e3Code[:halfwayIndex] || e2Code[halfwayIndex:] != e3Code[halfwayIndex:] {
-		t.Error("Child from crossover did not get half genes from both parents")
-	}
-
-	if e2Code[:halfwayIndex] != e4Code[:halfwayIndex] || e1Code[halfwayIndex:] != e4Code[halfwayIndex:] {
-		t.Error("Child from crossover did not get half genes from both parents")
-	}
+	// Test even number of genes
+	helper(10)
+	helper(4)
 }
