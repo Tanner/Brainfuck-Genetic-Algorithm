@@ -92,7 +92,9 @@ func (algorithm *Algorithm) Select() *Member {
 
 // updateFitness updates the fitness stored in each Member of the Algorithm's Population
 func (algorithm *Algorithm) updateFitness() {
-	for _, member := range algorithm.Population {
+	for i, _ := range algorithm.Population {
+		member := &algorithm.Population[i];
+
 		member.fitness = member.entity.Fitness(algorithm.Input, algorithm.GoalOutput)
 	}
 }
