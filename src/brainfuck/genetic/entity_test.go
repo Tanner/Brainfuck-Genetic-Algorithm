@@ -61,3 +61,13 @@ func TestCrossover(t *testing.T) {
 	helper(10)
 	helper(4)
 }
+
+func TestFitness(t *testing.T) {
+	e := NewEntityFromCode("++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.")
+
+	fitness := e.Fitness("", "Hello World!")
+
+	if fitness != 1.0 {
+		t.Errorf("Correct code did not get perfect fitness with correct output - got %f, want %f", fitness, 1.0)
+	}
+}
