@@ -6,8 +6,8 @@ import (
 )
 
 type Member struct {
-	entity Entity
-	fitness float64
+	Entity Entity
+	Fitness float64
 }
 
 type Algorithm struct {
@@ -30,7 +30,7 @@ func NewAlgorithm(populationSize, numberGenes int, mutationRate float32, goalOut
 	algorithm.BestMember = nil
 
 	for i, _ := range algorithm.Population {
-		algorithm.Population[i].entity = *NewEntity(numberGenes)
+		algorithm.Population[i].Entity = *NewEntity(numberGenes)
 	}
 
 	rand.Seed(time.Now().UTC().UnixNano())
@@ -46,7 +46,7 @@ func (algorithm *Algorithm) Evolve() {
 		parentA := algorithm.Select()
 		parentB := algorithm.Select()
 
-		childA, _, _ := Crossover(&parentA.entity, &parentB.entity)
+		childA, _, _ := Crossover(&parentA.Entity, &parentB.Entity)
 
 		childA.Mutate(algorithm.MutationRate)
 
@@ -68,14 +68,14 @@ func (algorithm *Algorithm) Select() *Member {
 	algorithm.updateFitness()
 
 	for _, member := range algorithm.Population {
-		fitnessSum += member.fitness
+		fitnessSum += member.Fitness
 	}
 
 	for i, member := range algorithm.Population {
-		if member.fitness == 0 || fitnessSum == 0 {
+		if member.Fitness == 0 || fitnessSum == 0 {
 			normalizedFitness[i] = 0
 		} else {
-			normalizedFitness[i] = member.fitness / fitnessSum
+			normalizedFitness[i] = member.Fitness / fitnessSum
 		}
 	}
 
@@ -98,9 +98,9 @@ func (algorithm *Algorithm) updateFitness() {
 	for i, _ := range algorithm.Population {
 		member := &algorithm.Population[i];
 
-		member.fitness = member.entity.Fitness(algorithm.Input, algorithm.GoalOutput)
+		member.Fitness = member.Entity.Fitness(algorithm.Input, algorithm.GoalOutput)
 
-		if algorithm.BestMember == nil || member.fitness > algorithm.BestMember.fitness {
+		if algorithm.BestMember == nil || member.Fitness > algorithm.BestMember.Fitness {
 			algorithm.BestMember = member
 		}
 	}
