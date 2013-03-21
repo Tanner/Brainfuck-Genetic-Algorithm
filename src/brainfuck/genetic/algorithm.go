@@ -33,9 +33,9 @@ func NewAlgorithm(populationSize, numberGenes int, mutationRate float32, goalOut
 
 // Evolve evolves the entire population (crossover and mutates)
 func (algorithm *Algorithm) Evolve() {
-	NextPopulation := make([]Member, len(algorithm.Population))
+	NextPopulation := make([]Member, 0, len(algorithm.Population))
 
-	for i := 0; i < len(NextPopulation); i++ {
+	for i := 0; i < cap(NextPopulation); i++ {
 		parentA := algorithm.Select()
 		parentB := algorithm.Select()
 
