@@ -3,7 +3,7 @@ package genetic
 import "testing"
 
 func TestMutation(t *testing.T) {
-	e := NewEntity()
+	e := NewEntity(10)
 
 	initialCode := e.Code()
 
@@ -27,10 +27,14 @@ func TestMutation(t *testing.T) {
 }
 
 func TestCrossover(t *testing.T) {
-	e1 := NewEntity()
-	e2 := NewEntity()
+	e1 := NewEntity(10)
+	e2 := NewEntity(10)
 
-	e3, e4 := Crossover(e1, e2)
+	e3, e4, err := Crossover(e1, e2)
+
+	if err != nil {
+		t.Error(err)
+	}
 
 	e1Code := e1.Code()
 	e2Code := e2.Code()

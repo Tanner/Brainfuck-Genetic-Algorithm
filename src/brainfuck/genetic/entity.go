@@ -6,16 +6,15 @@ import (
 	"fmt"
 )
 
-const numberGenes int = 100
 const numberGeneValues int = 8
 
 type Entity struct {
-	Genome [numberGenes]int
+	Genome []int
 }
 
 // NewEntity returns a new Entity with a random genome
-func NewEntity() *Entity {
-	var genome [numberGenes]int
+func NewEntity(numberGenes int) *Entity {
+	genome := make([]int, numberGenes, numberGenes)
 
 	for i, _ := range genome {
 		genome[i] = rand.Intn(numberGeneValues - 1)
@@ -73,7 +72,13 @@ func (e *Entity) Mutate(mutationRate float32) error {
 }
 
 // Crossover two entities' genomes at their halfway point, returning two new children entities
-func Crossover(e1 *Entity, e2 *Entity) (*Entity, *Entity) {
+func Crossover(e1 *Entity, e2 *Entity) (*Entity, *Entity, error) {
+	if len(e1.Genome) != len(e2.Genome) {
+		return nil, nil, fmt.Errorf("Parent genome lengths not the same, given %d, %d", len(e1.Genome), len(e2.Genome))
+	}
+
+	numberGenes := len(e1.Genome)
+
 	halfwayIndex := (int)(numberGenes / 2)
 	odd := 0
 
@@ -82,6 +87,8 @@ func Crossover(e1 *Entity, e2 *Entity) (*Entity, *Entity) {
 	}
 
 	var e3, e4 Entity
+	e3.Genome = make([]int, numberGenes, numberGenes)
+	e4.Genome = make([]int, numberGenes, numberGenes)
 
 	for i := 0; i < halfwayIndex + odd; i++ {
 		e3.Genome[i] = e1.Genome[i]
@@ -91,5 +98,5 @@ func Crossover(e1 *Entity, e2 *Entity) (*Entity, *Entity) {
 		e4.Genome[halfwayIndex + i] = e1.Genome[halfwayIndex + i]
 	}
 
-	return &e3, &e4
+	return &e3, &e4, nil
 }
