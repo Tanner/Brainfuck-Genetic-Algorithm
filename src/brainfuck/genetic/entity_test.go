@@ -25,3 +25,25 @@ func TestMutation(t *testing.T) {
 		t.Error("Mutation rate greater than 1.0 should not be accepted")
 	}
 }
+
+func TestCrossover(t *testing.T) {
+	e1 := NewEntity()
+	e2 := NewEntity()
+
+	e3, e4 := Crossover(e1, e2)
+
+	e1Code := e1.Code()
+	e2Code := e2.Code()
+	e3Code := e3.Code()
+	e4Code := e4.Code()
+
+	halfwayIndex := (int)(len(e1.Code()) / 2)
+
+	if e1Code[:halfwayIndex] != e3Code[:halfwayIndex] || e2Code[halfwayIndex:] != e3Code[halfwayIndex:] {
+		t.Error("Child from crossover did not get half genes from both parents")
+	}
+
+	if e2Code[:halfwayIndex] != e4Code[:halfwayIndex] || e1Code[halfwayIndex:] != e4Code[halfwayIndex:] {
+		t.Error("Child from crossover did not get half genes from both parents")
+	}
+}

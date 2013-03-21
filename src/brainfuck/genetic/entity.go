@@ -71,3 +71,25 @@ func (e *Entity) Mutate(mutationRate float32) error {
 
 	return nil
 }
+
+// Crossover two entities' genomes at their halfway point, returning two new children entities
+func Crossover(e1 *Entity, e2 *Entity) (*Entity, *Entity) {
+	halfwayIndex := (int)(numberGenes / 2)
+	odd := 0
+
+	if numberGenes % 2 != 0 {
+		odd = 1
+	}
+
+	var e3, e4 Entity
+
+	for i := 0; i < halfwayIndex + odd; i++ {
+		e3.Genome[i] = e1.Genome[i]
+		e3.Genome[halfwayIndex + i] = e2.Genome[halfwayIndex + i]
+
+		e4.Genome[i] = e2.Genome[i]
+		e4.Genome[halfwayIndex + i] = e1.Genome[halfwayIndex + i]
+	}
+
+	return &e3, &e4
+}
