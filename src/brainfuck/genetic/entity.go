@@ -120,7 +120,7 @@ func (e *Entity) Fitness(in, correctOutput string) int {
 	fitness := 0
 
 	for i := 0; i < len(outputString) && i < len(correctOutput); i++ {
-		fitness += (int) math.Abs((float64) (correctOutput[i] - outputString[i]))
+		fitness += int(math.Abs((float64) (correctOutput[i] - outputString[i])))
 	}
 
 	return fitness
