@@ -105,7 +105,7 @@ func Crossover(e1 *Entity, e2 *Entity) (*Entity, *Entity, error) {
 }
 
 // Fitness rates the output of an entity's code output to the desired output
-func (e *Entity) Fitness(in, correctOutput string) int {
+func (e *Entity) Fitness(in, correctOutput string) float64 {
 	output := new(bytes.Buffer)
 	input := strings.NewReader(in)
 
@@ -113,14 +113,18 @@ func (e *Entity) Fitness(in, correctOutput string) int {
 
 	if err != nil {
 		// Code did not validate, give a low fitness
-		return 0
+		return 0.0
 	}
 
 	outputString := output.String()
-	fitness := 0
+	fitness := 0.0
+
+	correctOutputLength := len(correctOutput)
 
 	for i := 0; i < len(outputString) && i < len(correctOutput); i++ {
-		fitness += int(math.Abs((float64) (correctOutput[i] - outputString[i])))
+		difference := math.Abs((float64) (correctOutput[i] - outputString[i]))
+
+		fitness += (1.0 - difference / 255.0) * (1.0 / float64(correctOutputLength))
 	}
 
 	return fitness
