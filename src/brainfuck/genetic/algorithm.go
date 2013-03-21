@@ -17,9 +17,10 @@ type Algorithm struct {
 	Generations int
 	MutationRate float32
 	BestMember *Member
+	MaxCycles int
 }
 
-func NewAlgorithm(populationSize, numberGenes int, mutationRate float32, goalOutput, input string) *Algorithm {
+func NewAlgorithm(populationSize, numberGenes int, mutationRate float32, goalOutput, input string, maxCycles int) *Algorithm {
 	algorithm := new(Algorithm)
 
 	algorithm.GoalOutput = goalOutput
@@ -28,6 +29,7 @@ func NewAlgorithm(populationSize, numberGenes int, mutationRate float32, goalOut
 	algorithm.Generations = 0
 	algorithm.MutationRate = mutationRate
 	algorithm.BestMember = nil
+	algorithm.MaxCycles = maxCycles
 
 	for i, _ := range algorithm.Population {
 		algorithm.Population[i].Entity = *NewEntity(numberGenes)
@@ -98,7 +100,7 @@ func (algorithm *Algorithm) updateFitness() {
 	for i, _ := range algorithm.Population {
 		member := &algorithm.Population[i];
 
-		member.Fitness = member.Entity.Fitness(algorithm.Input, algorithm.GoalOutput)
+		member.Fitness = member.Entity.Fitness(algorithm.Input, algorithm.GoalOutput, algorithm.MaxCycles)
 
 		if algorithm.BestMember == nil || member.Fitness > algorithm.BestMember.Fitness {
 			algorithm.BestMember = member
