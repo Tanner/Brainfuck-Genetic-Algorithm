@@ -2,7 +2,7 @@ package genetic
 
 type Member struct {
 	entity Entity
-	fitness float32
+	fitness float64
 }
 
 type Algorithm struct {
@@ -23,4 +23,11 @@ func NewAlgorithm(populationSize, numberGenes int, goalOutput, input string) *Al
 	}
 
 	return algorithm
+}
+
+// updateFitness updates the fitness stored in each Member of the Algorithm's Population
+func (algorithm *Algorithm) updateFitness() {
+	for _, member := range algorithm.Population {
+		member.fitness = member.entity.Fitness(algorithm.Input, algorithm.GoalOutput)
+	}
 }
