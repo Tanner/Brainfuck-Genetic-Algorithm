@@ -1,5 +1,7 @@
 package genetic
 
+import "math/rand"
+
 type Member struct {
 	entity Entity
 	fitness float64
@@ -23,6 +25,35 @@ func NewAlgorithm(populationSize, numberGenes int, goalOutput, input string) *Al
 	}
 
 	return algorithm
+}
+
+// Select selects a member from the population using roulette wheel selection
+func (algorithm *Algorithm) Select() *Member {
+	normalizedFitness := make([]float64, len(algorithm.Population))
+	fitnessSum := 0.0
+
+	algorithm.updateFitness()
+
+	for _, member := range algorithm.Population {
+		fitnessSum += member.fitness
+	}
+
+	for i, member := range algorithm.Population {
+		normalizedFitness[i] = member.fitness / fitnessSum
+	}
+
+	decision := rand.Float64()
+	sum := 0.0
+
+	for i, fitness := range normalizedFitness {
+		sum += fitness
+
+		if sum >= decision {
+			return &algorithm.Population[i]
+		}
+	}
+
+	return nil
 }
 
 // updateFitness updates the fitness stored in each Member of the Algorithm's Population
