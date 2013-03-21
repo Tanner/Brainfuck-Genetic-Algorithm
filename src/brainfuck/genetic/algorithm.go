@@ -11,14 +11,17 @@ type Algorithm struct {
 	Population []Member
 	GoalOutput string
 	Input string
+	MutationRate float32
 }
 
-func NewAlgorithm(populationSize, numberGenes int, goalOutput, input string) *Algorithm {
+func NewAlgorithm(populationSize, numberGenes int, mutationRate float32, goalOutput, input string) *Algorithm {
 	algorithm := new(Algorithm)
 
 	algorithm.GoalOutput = goalOutput
 	algorithm.Input = input
 	algorithm.Population = make([]Member, populationSize, populationSize)
+	algorithm.Generations = 0
+	algorithm.MutationRate = mutationRate
 
 	for i, _ := range algorithm.Population {
 		algorithm.Population[i].entity = *NewEntity(numberGenes)
