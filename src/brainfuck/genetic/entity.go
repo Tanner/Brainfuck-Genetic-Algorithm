@@ -1,9 +1,12 @@
 package genetic
 
 import (
+	"math"
 	"math/rand"
 	"bytes"
 	"fmt"
+	"strings"
+	"github.com/Tanner/Brainfuck-Go/src/brainfuck"
 )
 
 const numberGeneValues int = 8
@@ -99,4 +102,26 @@ func Crossover(e1 *Entity, e2 *Entity) (*Entity, *Entity, error) {
 	}
 
 	return &e3, &e4, nil
+}
+
+// Fitness rates the output of an entity's code output to the desired output
+func (e *Entity) Fitness(in, correctOutput string) int {
+	output := new(bytes.Buffer)
+	input := strings.NewReader(in)
+
+	err := brainfuck.Run(e.Code(), output, input)
+
+	if err != nil {
+		// Code did not validate, give a low fitness
+		return 0
+	}
+
+	outputString := output.String()
+	fitness := 0
+
+	for i := 0; i < len(outputString) && i < len(correctOutput); i++ {
+		fitness += (int) math.Abs((float64) (correctOutput[i] - outputString[i]))
+	}
+
+	return fitness
 }
