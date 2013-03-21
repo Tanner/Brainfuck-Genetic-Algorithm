@@ -1,6 +1,9 @@
 package genetic
 
-import "math/rand"
+import (
+	"math"
+	"math/rand"
+)
 
 type Member struct {
 	entity Entity
@@ -67,6 +70,10 @@ func (algorithm *Algorithm) Select() *Member {
 
 	for i, member := range algorithm.Population {
 		normalizedFitness[i] = member.fitness / fitnessSum
+
+		if normalizedFitness[i] == math.NaN() {
+			normalizedFitness[i] = 0.0
+		}
 	}
 
 	decision := rand.Float64()
