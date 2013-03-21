@@ -28,6 +28,40 @@ func NewEntity(numberGenes int) *Entity {
 	return &e
 }
 
+// NewEntityFromCode returns a new Entity from the given brainfuck code
+func NewEntityFromCode(code string) *Entity {
+	genome := make([]int, len(code), len(code))
+
+	for i, v := range code {
+		geneValue := 0
+
+		switch(v) {
+		case '>':
+			geneValue = 0
+		case '<':
+			geneValue = 1
+		case '+':
+			geneValue = 2
+		case '-':
+			geneValue = 3
+		case '.':
+			geneValue = 4
+		case ',':
+			geneValue = 5
+		case '[':
+			geneValue = 6
+		case ']':
+			geneValue = 7
+		}
+
+		genome[i] = geneValue
+	}
+
+	e := Entity{genome}
+
+	return &e
+}
+
 // Code returns the brainfuck code for the given Entity's genome
 func (e *Entity) Code() string {
 	var code bytes.Buffer
