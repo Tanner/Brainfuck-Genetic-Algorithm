@@ -83,7 +83,7 @@ func (algorithm *Algorithm) Select() *Member {
 		}
 	}
 
-	return nil
+	return &algorithm.Population[rand.Intn(len(algorithm.Population))]
 }
 
 // updateFitness updates the fitness stored in each Member of the Algorithm's Population
