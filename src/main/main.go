@@ -4,25 +4,35 @@ import (
 	"fmt"
 	"bytes"
 	"strings"
+	"time"
 	"brainfuck"
 	"brainfuck/genetic"
 )
 
 func main() {
-	algorithm := genetic.NewAlgorithm(10, 20, 0.25, "Hi", "", 10000)
+	algorithm := genetic.NewAlgorithm(500, 10, 0.5, "Hi", "", 1000)
 
-	for i := 0; i < 1000; i++ {
-		fmt.Printf("Generation %d\n", algorithm.Generations)
+	desiredFitness := 0.8
+	bestFitness := 0.0
+
+	for bestFitness < desiredFitness {
+		now := time.Now()
+
+		fmt.Printf("Generation %d", algorithm.Generations)
 
 		algorithm.Evolve()
 
-		fmt.Printf("Best performing member (fitness %f)\n", algorithm.BestMember.Fitness)
+		fmt.Printf(" (%s)\n", time.Since(now))
+
+		bestFitness = algorithm.BestMember.Fitness
+
+		fmt.Printf("Best performing member (fitness %f)\n", bestFitness)
 		fmt.Printf("Code:   %s\n", algorithm.BestMember.Entity.Code())
 
 		output := new(bytes.Buffer)
 		input := strings.NewReader("")
 
-		brainfuck.Run(algorithm.BestMember.Entity.Code(), output, input, 10000)
+		brainfuck.Run(algorithm.BestMember.Entity.Code(), output, input, 1000)
 		fmt.Printf("Output: %s\n\n", output.String())
 	}
 }
