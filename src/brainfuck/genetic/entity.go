@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"fmt"
 	"strings"
+	"time"
 	"github.com/Tanner/Brainfuck-Go/src/brainfuck"
 )
 
@@ -18,6 +19,8 @@ type Entity struct {
 // NewEntity returns a new Entity with a random genome
 func NewEntity(numberGenes int) *Entity {
 	genome := make([]int, numberGenes, numberGenes)
+
+	rand.Seed(time.Now().UTC().UnixNano())
 
 	for i, _ := range genome {
 		genome[i] = rand.Intn(numberGeneValues - 1)
