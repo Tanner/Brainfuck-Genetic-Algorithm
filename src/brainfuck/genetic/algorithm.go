@@ -97,11 +97,19 @@ func (algorithm *Algorithm) Select() *Member {
 
 // updateFitness updates the fitness stored in each Member of the Algorithm's Population
 func (algorithm *Algorithm) updateFitness() {
+	c := make(chan *Member)
+
 	for i, _ := range algorithm.Population {
 		member := &algorithm.Population[i];
 
-		member.Fitness = member.Entity.Fitness(algorithm.Input, algorithm.GoalOutput, algorithm.MaxCycles)
+		go func() {
+			member.Fitness = member.Entity.Fitness(algorithm.Input, algorithm.GoalOutput, algorithm.MaxCycles)
+			c <- member
+		}()
+	}
 
+	for i := 0; i < len(algorithm.Population); i++ {
+		member := <- c
 		if algorithm.BestMember == nil || member.Fitness > algorithm.BestMember.Fitness {
 			algorithm.BestMember = member
 		}
