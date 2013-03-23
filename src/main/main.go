@@ -1,13 +1,12 @@
 package main
 
 import (
-	"fmt"
-	"bytes"
-	"strings"
-	"time"
-	"runtime"
 	"brainfuck"
 	"brainfuck/genetic"
+	"bytes"
+	"fmt"
+	"strings"
+	"time"
 )
 
 func main() {
