@@ -6,18 +6,18 @@ import (
 )
 
 type Member struct {
-	Entity Entity
+	Entity  Entity
 	Fitness float64
 }
 
 type Algorithm struct {
-	Population []Member
-	GoalOutput string
-	Input string
-	Generations int
+	Population   []Member
+	GoalOutput   string
+	Input        string
+	Generations  int
 	MutationRate float32
-	BestMember *Member
-	MaxCycles int
+	BestMember   *Member
+	MaxCycles    int
 }
 
 func NewAlgorithm(populationSize, numberGenes int, mutationRate float32, goalOutput, input string, maxCycles int) *Algorithm {
@@ -98,7 +98,7 @@ func (algorithm *Algorithm) Select() *Member {
 // updateFitness updates the fitness stored in each Member of the Algorithm's Population
 func (algorithm *Algorithm) updateFitness() {
 	for i, _ := range algorithm.Population {
-		member := &algorithm.Population[i];
+		member := &algorithm.Population[i]
 
 		member.Fitness = member.Entity.Fitness(algorithm.Input, algorithm.GoalOutput, algorithm.MaxCycles)
 

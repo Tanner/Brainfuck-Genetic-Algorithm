@@ -1,13 +1,13 @@
 package genetic
 
 import (
-	"math"
-	"math/rand"
 	"bytes"
 	"fmt"
+	"github.com/Tanner/Brainfuck-Go/src/brainfuck"
+	"math"
+	"math/rand"
 	"strings"
 	"time"
-	"github.com/Tanner/Brainfuck-Go/src/brainfuck"
 )
 
 const numberGeneValues int = 8
@@ -38,7 +38,7 @@ func NewEntityFromCode(code string) *Entity {
 	for i, v := range code {
 		geneValue := 0
 
-		switch(v) {
+		switch v {
 		case '>':
 			geneValue = 0
 		case '<':
@@ -71,7 +71,7 @@ func (e *Entity) Code() string {
 	var instruction rune
 
 	for _, v := range e.Genome {
-		switch(v) {
+		switch v {
 		case 0:
 			instruction = '>'
 		case 1:
@@ -122,7 +122,7 @@ func Crossover(e1 *Entity, e2 *Entity) (*Entity, *Entity, error) {
 	halfwayIndex := (int)(numberGenes / 2)
 	odd := 0
 
-	if numberGenes % 2 != 0 {
+	if numberGenes%2 != 0 {
 		odd = 1
 	}
 
@@ -130,12 +130,12 @@ func Crossover(e1 *Entity, e2 *Entity) (*Entity, *Entity, error) {
 	e3.Genome = make([]int, numberGenes, numberGenes)
 	e4.Genome = make([]int, numberGenes, numberGenes)
 
-	for i := 0; i < halfwayIndex + odd; i++ {
+	for i := 0; i < halfwayIndex+odd; i++ {
 		e3.Genome[i] = e1.Genome[i]
-		e3.Genome[halfwayIndex + i] = e2.Genome[halfwayIndex + i]
+		e3.Genome[halfwayIndex+i] = e2.Genome[halfwayIndex+i]
 
 		e4.Genome[i] = e2.Genome[i]
-		e4.Genome[halfwayIndex + i] = e1.Genome[halfwayIndex + i]
+		e4.Genome[halfwayIndex+i] = e1.Genome[halfwayIndex+i]
 	}
 
 	return &e3, &e4, nil
@@ -159,9 +159,9 @@ func (e *Entity) Fitness(in, correctOutput string, maxCycles int) float64 {
 	correctOutputLength := len(correctOutput)
 
 	for i := 0; i < len(outputString) && i < len(correctOutput); i++ {
-		difference := math.Abs((float64) (correctOutput[i] - outputString[i]))
+		difference := math.Abs((float64)(correctOutput[i] - outputString[i]))
 
-		fitness += (1.0 - difference / 255.0) * (1.0 / float64(correctOutputLength))
+		fitness += (1.0 - difference/255.0) * (1.0 / float64(correctOutputLength))
 	}
 
 	return fitness

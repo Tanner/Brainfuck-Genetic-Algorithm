@@ -7,7 +7,7 @@ func TestMutation(t *testing.T) {
 
 	initialCode := e.Code()
 
-	if	err := e.Mutate(0.9); err != nil {
+	if err := e.Mutate(0.9); err != nil {
 		t.Error(err)
 	}
 
